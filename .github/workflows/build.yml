@@ -1,4 +1,5 @@
 name: Build APK - 扫雷
+
 on:
   push:
     branches: [ main, master ]
@@ -8,20 +9,34 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
-      - uses: actions/setup-java@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          
-      - uses: android-actions/setup-android@v3
-      - uses: gradle/actions/setup-gradle@v3
-      
-      - run: chmod +x gradlew
-      - run: ./gradlew assembleDebug
-      
-      - uses: actions/upload-artifact@v4
+
+      - name: Setup Android SDK
+        run: |
+          echo "Installing Android SDK..."
+          # 接受所有许可
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          # 安装必要组件
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
           name: 扫雷-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
