@@ -1,4 +1,5 @@
 package com.example.minesweeper
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
