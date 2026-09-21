@@ -6,7 +6,6 @@ plugins {
 android {
     namespace = "com.example.minesweeper"
     compileSdk = 34
-
     defaultConfig {
         applicationId = "com.example.minesweeper"
         minSdk = 24
@@ -14,11 +13,9 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
